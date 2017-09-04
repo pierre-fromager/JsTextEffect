@@ -1,0 +1,35 @@
+
+@keyframes ret {
+    0% {
+        -webkit-transform:rotateY(0deg);
+        -moz-transform:rotateY(0deg);
+        -o-transform:rotateY(0deg);
+        -ms-transform:rotateY(0deg);
+    }
+    50% {
+        -webkit-transform:rotateY(90deg);
+        -moz-transform:rotateY(90deg);
+        -o-transform:rotateY(90deg);
+        -ms-transform:rotateY(90deg);
+
+    }
+    100% {
+        -webkit-transform:rotateY(0deg);
+        -moz-transform:rotateY(0deg);
+        -o-transform:rotateY(0deg);
+        -ms-transform:rotateY(0deg);
+
+    }
+}
+
+.lefti{
+    float:left;
+    display: none;
+}
+.rt{
+    display: block;
+    float: left;
+    animation-name: ret;
+    animation-duration: 500ms;
+    animation-timing-function: ease-in-out;
+}
