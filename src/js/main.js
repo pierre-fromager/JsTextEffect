@@ -11,8 +11,8 @@ var textEffect = function (options) {
     this.default_wrapperTag = 'div';
     this.default_animTempo = 0;
     this.default_clearClass = 'clear';
-    this.default_started = function(){ console.log('started')};
-    this.default_completed = function(){console.log('completed')};
+    this.default_started = function(){ console.log(this.selector + ' started');};
+    this.default_completed = function(){console.log(this.selector + 'completed');};
 
     this.init = function () {
         this.nodeList = [];
@@ -77,11 +77,10 @@ var textEffect = function (options) {
             function (x, that) {
                 return function () {
                     childss[x].className = classActiv;
-                    if (x === 0) {that.started();}
                     if (x === (childss.length - 1)) {that.completed();}
                 };
             }(ct, this)
-            , (1 + ct) * this.animTempo     //childss[ct].innerHTML.charCodeAt(0)
+            , (1 + ct) * this.animTempo
         );
     };
     
@@ -117,6 +116,7 @@ var textEffect = function (options) {
     };
     
     this.run = function () {
+        this.started();
         for (this.nodeListIndex = 0; this.nodeListIndex < this.nodeList.length; ++this.nodeListIndex) {
             var done = this.hasClass(this.getCurrentNodeItem(), this.default_animDoneClass);
             if (done === false) {
