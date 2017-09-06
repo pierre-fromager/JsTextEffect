@@ -112,6 +112,7 @@ var textEffect = function (options) {
                 this.getCurrentNodeItem().className += ' ' + this.default_animDoneClass;
             }
         }
+        return this;
     };
     
     this.reset = function () {
@@ -127,6 +128,8 @@ var textEffect = function (options) {
                 this.getCurrentNodeItem().removeChild(childs[ct]);
             }
             this.setNodeListItemContent(tContent);
+            var classContext = this.getCurrentNodeItem().className.split(' ');
+            this.getCurrentNodeItem().className = classContext[0];
         }
         return this;
     };

@@ -79,3 +79,14 @@
     animation-duration: 500ms;
     animation-timing-function: ease-in-out;
 }
+
+button{
+   margin-top: 1.5em;
+}
+
+.showTime{
+    border-radius: 1em;
+    border-width: 2px;
+    border-style: dashed;
+    border-color: lightgray;
+}
