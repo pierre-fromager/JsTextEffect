@@ -75,17 +75,25 @@
                     animActivClass: 'te_rotatey',
                     animTempo: 10,
                     clearClass: 'clear',
-                    cbStart: function(){document.getElementById('playP1').display = "none"},
-                    cbComplete: function(){document.getElementById('playP1').display = "block"}
+                    cbStart: function(){
+                        document.getElementById('playP1').style.display = "none";
+                    },
+                    cbComplete: function(){
+                        document.getElementById('playP1').style.display = "block";
+                    }
                 }).init().run();
 
                 var t2 = new textEffect({
                     selector: 'div.p2',
                     animActivClass: 'te_scalexy',
-                    animTempo: 10,
+                    animTempo: 20,
                     clearClass: 'clear',
-                    cbStart: function(){document.getElementById('playP2').style.display = "none"},
-                    cbComplete: function(){document.getElementById('playP2').style.display = "block"}
+                    cbStart: function(){
+                        document.getElementById('playP2').style.display = "none";
+                    },
+                    cbComplete: function(){
+                        document.getElementById('playP2').style.display = "block";
+                    }
                 }).init().run();
 
                 document.getElementById('playP1').addEventListener("click", function (e) {
