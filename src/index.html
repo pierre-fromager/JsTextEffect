@@ -75,8 +75,8 @@
                     animActivClass: 'te_rotatey',
                     animTempo: 10,
                     clearClass: 'clear',
-                    cbStart: function(){console.log('P1 started')},
-                    cbComplete: function(){console.log('P1 completed')}
+                    cbStart: function(){console.info('P1 started')},
+                    cbComplete: function(){console.info('P1 completed')}
                 }).init().run();
 
                 var t2 = new textEffect({
@@ -84,8 +84,8 @@
                     animActivClass: 'te_scalexy',
                     animTempo: 10,
                     clearClass: 'clear',
-                    cbStart: function(){console.log('P2 started')},
-                    cbComplete: function(){console.log('P2 completed')}
+                    cbStart: function(){console.info('P2 started')},
+                    cbComplete: function(){console.info('P2 completed')}
                 }).init().run();
 
                 document.getElementById('playP1').addEventListener("click", function (e) {
