@@ -1,6 +1,8 @@
 var textEffect = function (options) {
 
     this.options = options;
+        this.default_linefeed = "\n";
+
     this.default_selector = 'div.p';
     this.default_hspace = '&nbsp;';
     this.default_space = ' ';
@@ -10,6 +12,8 @@ var textEffect = function (options) {
     this.default_wrapperTag = 'div';
     this.default_animTempo = 0;
     this.default_clearClass = 'clear';
+    this.default_started = function(){ console.log('started')};
+    this.default_completed = function(){console.log('completed')};
 
     this.init = function () {
         this.nodeList = [];
@@ -29,6 +33,12 @@ var textEffect = function (options) {
         this.clearClass =  (this.options.clearClass) 
             ? this.options.clearClass 
             : this.default_clearClass;
+        this.cbStart =  (this.options.cbStart) 
+            ? this.options.cbStart 
+            : this.default_started;
+        this.cbComplete =  (this.options.cbComplete) 
+            ? this.options.cbComplete 
+            : this.default_completed;
         this.setNodeList();
         return this;
     };
@@ -45,19 +55,33 @@ var textEffect = function (options) {
     
     this.getWrapper = function (tContent, ct) {
         var wrapper = document.createElement(this.default_wrapperTag);
-        var lfClass = (tContent[ct] === "\n") ? 'clear' : '';
+        var lfClass = (tContent[ct] === this.default_linefeed) 
+            ? this.clearClass 
+            : '';
         wrapper.innerHTML = (tContent[ct] === this.default_space)
             ? this.default_hspace
             : tContent[ct];
-        wrapper.className = this.animInactivClass + ' ' + lfClass;
+        wrapper.className = this.animInactivClass + this.default_space + lfClass;
         return wrapper;
+    };
+    
+    this.completed = function () {
+        this.cbComplete();
+    };
+    
+    this.started = function () {
+        this.cbStart();
     };
     
     this.runTempo = function (childss, ct, classActiv) {
         setTimeout(
-            function (x) {
-                return function () {childss[x].className = classActiv;};
-            }(ct)
+            function (x, that) {
+                return function () {
+                    if (x === 0) {that.started();}
+                    if (x === (childss.length - 1)) {that.completed();}
+                    childss[x].className = classActiv;
+                };
+            }(ct, this)
             , (1 + ct) * this.animTempo     //childss[ct].innerHTML.charCodeAt(0)
         );
     };
@@ -104,8 +128,8 @@ var textEffect = function (options) {
                 }
                 var childss = this.getNodeListItem();
                 for (var ct = 0; ct < childss.length; ++ct) {
-                    var clearClass = (this.hasClass(childss[ct],'clear')) 
-                        ? 'clear' 
+                    var clearClass = (this.hasClass(childss[ct], this.clearClass)) 
+                        ? this.clearClass 
                         : '';
                     this.runTempo(childss, ct, this.animActivClass + ' ' + clearClass);
                 }
