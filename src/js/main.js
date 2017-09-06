@@ -1,8 +1,7 @@
 var textEffect = function (options) {
 
     this.options = options;
-        this.default_linefeed = "\n";
-
+    this.default_linefeed = "\n";
     this.default_selector = 'div.p';
     this.default_hspace = '&nbsp;';
     this.default_space = ' ';
@@ -77,9 +76,9 @@ var textEffect = function (options) {
         setTimeout(
             function (x, that) {
                 return function () {
+                    childss[x].className = classActiv;
                     if (x === 0) {that.started();}
                     if (x === (childss.length - 1)) {that.completed();}
-                    childss[x].className = classActiv;
                 };
             }(ct, this)
             , (1 + ct) * this.animTempo     //childss[ct].innerHTML.charCodeAt(0)
