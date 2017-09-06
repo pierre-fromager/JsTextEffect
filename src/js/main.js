@@ -1,42 +1,135 @@
-function textEffect(query) {
-    query = (query) ? query : 'div.p';
-    var space = '&nbsp;';
-    var spaceL = ' ';
-    var pList = document.querySelectorAll(query), i;
-    for (i = 0; i < pList.length; ++i) {
-        var childs = pList[i].childNodes;
-        if (childs.length === 1) {
-            var tContent = pList[i].innerHTML;
-            pList[i].innerHTML = '';
-            for (var ct = 0; ct < tContent.length; ++ct) {
-                var div = document.createElement('div');
-                div.innerHTML = (tContent[ct] === spaceL) ? space : tContent[ct];
-                div.className = 'lefti';
-                pList[i].appendChild(div);
-            }
-            var childss = pList[i].childNodes;
-            for (var ct = 0; ct < childss.length; ++ct) {
-                setTimeout(
-                    function (x) {
-                        return function () {
-                            childss[x].className = 'rt';
-                        };
-                    }(ct)
-                    , (1 + ct) * childss[ct].innerHTML.charCodeAt(0)
-                );
-            }
-            pList[i].className += ' rd_done';
+var textEffect = function (options) {
+
+    this.options = options;
+    this.default_selector = 'div.p';
+    this.default_hspace = '&nbsp;';
+    this.default_space = ' ';
+    this.default_animInactivClass = 'te_inactiv';
+    this.default_animActivClass = 'te_rotatey';
+    this.default_animDoneClass = 'rd_done';
+    this.default_wrapperTag = 'div';
+    this.default_animTempo = 0;
+    this.default_clearClass = 'clear';
+
+    this.init = function () {
+        this.nodeList = [];
+        this.nodeListIndex = 0;
+        this.selector = (this.options.selector) 
+            ? this.options.selector 
+            : this.default_selector;
+        this.animTempo =  (this.options.animTempo) 
+            ? this.options.animTempo 
+            : this.default_animTempo;
+        this.animActivClass =  (this.options.animActivClass) 
+            ? this.options.animActivClass 
+            : this.default_animActivClass;
+        this.animInactivClass =  (this.options.animInactivClass) 
+            ? this.options.animInactivClass 
+            : this.default_animInactivClass;
+        this.clearClass =  (this.options.clearClass) 
+            ? this.options.clearClass 
+            : this.default_clearClass;
+        this.setNodeList();
+        return this;
+    };
+
+    this.setSelector = function (selector) {
+        this.selector = selector;
+        return this;
+    };
+    
+    this.setTempo = function (tempo) {
+        this.animTempo = tempo;
+        return this;
+    };
+    
+    this.getWrapper = function (tContent, ct) {
+        var wrapper = document.createElement(this.default_wrapperTag);
+        var lfClass = (tContent[ct] === "\n") ? 'clear' : '';
+        wrapper.innerHTML = (tContent[ct] === this.default_space)
+            ? this.default_hspace
+            : tContent[ct];
+        wrapper.className = this.animInactivClass + ' ' + lfClass;
+        return wrapper;
+    };
+    
+    this.runTempo = function (childss, ct, classActiv) {
+        setTimeout(
+            function (x) {
+                return function () {childss[x].className = classActiv;};
+            }(ct)
+            , (1 + ct) * this.animTempo     //childss[ct].innerHTML.charCodeAt(0)
+        );
+    };
+    
+    this.setNodeList = function(){
+        this.nodeList = document.querySelectorAll(this.selector);
+    };
+    
+    this.getCurrentNodeItem = function(){
+        return this.nodeList[this.nodeListIndex];
+    };
+    
+    this.getNodeListItem = function(){
+        return this.getCurrentNodeItem().childNodes;
+    };
+    
+    this.getNodeListItemContent = function(){
+        return this.getCurrentNodeItem().innerHTML;
+    };
+    
+    this.setNodeListItemContent = function(content){
+        this.getCurrentNodeItem().innerHTML = content;
+    };
+    
+    this.hasClass = function (el, className) {
+        if (!el.className) {
+            return false;
         } else {
+            var newElementClass = ' ' + el.className + ' ';
+            var newClassName = ' ' + className + ' ';
+            var has = newElementClass.indexOf(newClassName) !== -1;
+            return has;
+        }
+    };
+    
+    this.run = function () {
+        for (this.nodeListIndex = 0; this.nodeListIndex < this.nodeList.length; ++this.nodeListIndex) {
+            var done = this.hasClass(this.getCurrentNodeItem(), this.default_animDoneClass);
+            if (done === false) {
+                var tContent = this.getNodeListItemContent();
+                this.setNodeListItemContent('');
+                for (var ct = 0; ct < tContent.length; ++ct) {
+                    this.getCurrentNodeItem().appendChild(this.getWrapper(tContent, ct));
+                }
+                var childss = this.getNodeListItem();
+                for (var ct = 0; ct < childss.length; ++ct) {
+                    var clearClass = (this.hasClass(childss[ct],'clear')) 
+                        ? 'clear' 
+                        : '';
+                    this.runTempo(childss, ct, this.animActivClass + ' ' + clearClass);
+                }
+                this.getCurrentNodeItem().className += ' ' + this.default_animDoneClass;
+            }
+        }
+    };
+    
+    this.reset = function () {
+        for (this.nodeListIndex = 0; this.nodeListIndex < this.nodeList.length; ++this.nodeListIndex) {
+            var childs = this.getNodeListItem();
             var tContent = '';
             for (var ct = 0; ct < childs.length; ++ct) {
-                tContent += (childs[ct].innerHTML === space)
-                    ? spaceL
+                tContent += (childs[ct].innerHTML === this.default_hspace)
+                    ? this.default_space
                     : childs[ct].innerHTML;
             }
             for (var ct = 0; ct < childs.length; ++ct) {
-                pList[i].removeChild(childs[ct]);
+                this.getCurrentNodeItem().removeChild(childs[ct]);
             }
-            pList[i].innerHTML = tContent;
+            this.setNodeListItemContent(tContent);
         }
-    }
-}
+        return this;
+    };
+    
+    return this;
+};
