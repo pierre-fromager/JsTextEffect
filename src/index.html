@@ -48,7 +48,7 @@
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
                         Quisque sollicitudin lacus porttitor congue tincidunt. 
                         Praesent eget odio eget ipsum volutpat auctor porta ac ipsum. 
-                        Integer eget erat a tellus ornare auctor eu vel felis. 
+                        Integer eget erat a tellus ornare auctor eu vel felis.
                     </div>
                 </div>
             </div>
@@ -68,13 +68,16 @@
                         Vivamus malesuada auctor turpis, id scelerisque quam ornare ut. 
                         Sed ultrices gravida libero eget viverra. Suspendisse ut risus ex. 
                         Curabitur at ipsum id velit porttitor blandit sed ut nunc. 
-                        Aliquam porttitor id quam id blandit. 
+                        Aliquam porttitor id quam id blandit.
                     </div>
                 </div>                                
             </div>
         </div>
 
         <script>
+            function show(id,visible){
+                document.getElementById(id).style.display = (visible) ? "block" : "none";
+            }
             document.addEventListener('DOMContentLoaded', function () {
                 
                 var t1 = new textEffect({
@@ -82,12 +85,8 @@
                     animActivClass: 'te_rotatey',
                     animTempo: 10,
                     clearClass: 'clear',
-                    cbStart: function(){
-                        document.getElementById('playP1').style.display = "none";
-                    },
-                    cbComplete: function(){
-                        document.getElementById('playP1').style.display = "block";
-                    }
+                    cbStart: function(){show('playP1', false);},
+                    cbComplete: function(){show('playP1', true);}
                 }).init().run();
 
                 var t2 = new textEffect({
@@ -95,12 +94,8 @@
                     animActivClass: 'te_scalexy',
                     animTempo: 20,
                     clearClass: 'clear',
-                    cbStart: function(){
-                        document.getElementById('playP2').style.display = "none";
-                    },
-                    cbComplete: function(){
-                        document.getElementById('playP2').style.display = "block";
-                    }
+                    cbStart: function(){show('playP2', false);},
+                    cbComplete: function(){show('playP2', true);}
                 }).init().run();
 
                 document.getElementById('playP1').addEventListener("click", function (e) {

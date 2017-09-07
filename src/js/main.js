@@ -39,6 +39,7 @@ var textEffect = function (options) {
             ? this.options.cbComplete 
             : this.default_completed;
         this.setNodeList();
+        this.timers = [];
         return this;
     };
 
@@ -66,6 +67,10 @@ var textEffect = function (options) {
     
     this.completed = function () {
         this.cbComplete();
+        for(var t=0;t<this.timers.length;++t) {
+            clearTimeout(this.timers[t]);
+        }
+        this.timers = [];
     };
     
     this.started = function () {
@@ -73,7 +78,7 @@ var textEffect = function (options) {
     };
     
     this.runTempo = function (childss, ct, classActiv) {
-        setTimeout(
+        this.timers.push(setTimeout(
             function (x, that) {
                 return function () {
                     childss[x].className = classActiv;
@@ -81,7 +86,7 @@ var textEffect = function (options) {
                 };
             }(ct, this)
             , (1 + ct) * this.animTempo
-        );
+        ));
     };
     
     this.setNodeList = function(){
@@ -117,9 +122,9 @@ var textEffect = function (options) {
     
     this.removeDuplicated = function(content,all){
         return (all) 
-            ? content.replace(/\s\s+/g, ' ') 
-            : content.replace(/  +/g, ' ');
-    }
+            ? content.replace(/\s\s+/g, this.default_space) 
+            : content.replace(/  +/g, this.default_space);
+    };
     
     this.run = function () {
         this.started();
