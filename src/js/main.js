@@ -12,7 +12,8 @@ var textEffect = function (options) {
     this.default_animTempo = 0;
     this.default_clearClass = 'clear';
     this.default_started = function(){ console.log(this.selector + ' started');};
-    this.default_completed = function(){console.log(this.selector + 'completed');};
+    this.default_completed = function(){console.log(this.selector + ' completed');};
+    this.default_delay = function (childs, ct, tempo) {return (1 + ct) * tempo;};
 
     this.init = function () {
         this.nodeList = [];
@@ -38,6 +39,9 @@ var textEffect = function (options) {
         this.cbComplete =  (this.options.cbComplete) 
             ? this.options.cbComplete 
             : this.default_completed;
+        this.cbTempoDelay =  (this.options.cbTempoDelay) 
+            ? this.options.cbTempoDelay 
+            : this.default_delay;
         this.setNodeList();
         this.timers = [];
         return this;
@@ -78,6 +82,7 @@ var textEffect = function (options) {
     };
     
     this.runTempo = function (childss, ct, classActiv) {
+        var delay = this.cbTempoDelay(childss, ct, this.animTempo);
         this.timers.push(setTimeout(
             function (x, that) {
                 return function () {
@@ -85,7 +90,7 @@ var textEffect = function (options) {
                     if (x === (childss.length - 1)) {that.completed();}
                 };
             }(ct, this)
-            , (1 + ct) * this.animTempo
+            , delay
         ));
     };
     
@@ -119,10 +124,10 @@ var textEffect = function (options) {
             return has;
         }
     };
-    
-    this.removeDuplicated = function(content,all){
-        return (all) 
-            ? content.replace(/\s\s+/g, this.default_space) 
+
+    this.removeDuplicated = function (content, all) {
+        return (all)
+            ? content.replace(/\s\s+/g, this.default_space)
             : content.replace(/  +/g, this.default_space);
     };
     
@@ -162,7 +167,7 @@ var textEffect = function (options) {
                 this.getCurrentNodeItem().removeChild(childs[ct]);
             }
             this.setNodeListItemContent(tContent);
-            var classContext = this.getCurrentNodeItem().className.split(' ');
+            var classContext = this.getCurrentNodeItem().className.split(this.default_space);
             this.getCurrentNodeItem().className = classContext[0];
         }
         return this;

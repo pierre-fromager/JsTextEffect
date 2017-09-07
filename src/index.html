@@ -86,7 +86,12 @@
                     animTempo: 10,
                     clearClass: 'clear',
                     cbStart: function(){show('playP1', false);},
-                    cbComplete: function(){show('playP1', true);}
+                    cbComplete: function(){show('playP1', true);},
+                    cbTempoDelay: function(childs, ct, tempo) {
+                        var l = ((Math.sin(ct) * tempo) >> 0);
+                        var pl = (l < 0) ? l * -1 : l;
+                        return tempo + (2 * pl);
+                    }
                 }).init().run();
 
                 var t2 = new textEffect({
