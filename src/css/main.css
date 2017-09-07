@@ -90,3 +90,7 @@ button{
     border-style: dashed;
     border-color: lightgray;
 }
+
+.p1,.p2{
+    float:left;
+}

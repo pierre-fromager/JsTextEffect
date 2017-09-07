@@ -115,12 +115,18 @@ var textEffect = function (options) {
         }
     };
     
+    this.removeDuplicated = function(content,all){
+        return (all) 
+            ? content.replace(/\s\s+/g, ' ') 
+            : content.replace(/  +/g, ' ');
+    }
+    
     this.run = function () {
         this.started();
         for (this.nodeListIndex = 0; this.nodeListIndex < this.nodeList.length; ++this.nodeListIndex) {
             var done = this.hasClass(this.getCurrentNodeItem(), this.default_animDoneClass);
             if (done === false) {
-                var tContent = this.getNodeListItemContent();
+                var tContent = this.removeDuplicated(this.getNodeListItemContent());
                 this.setNodeListItemContent('');
                 for (var ct = 0; ct < tContent.length; ++ct) {
                     this.getCurrentNodeItem().appendChild(this.getWrapper(tContent, ct));
