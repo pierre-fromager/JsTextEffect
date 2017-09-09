@@ -88,9 +88,9 @@
                     cbStart: function(){show('playP1', false);},
                     cbComplete: function(){show('playP1', true);},
                     cbTempoDelay: function(childs, ct, tempo) {
-                        var l = ((Math.sin(ct) * tempo) >> 0);
+                        var l = Math.cos(ct) >> 0;
                         var pl = (l < 0) ? l * -1 : l;
-                        return tempo + (2 * pl);
+                        return (tempo + (100 * pl));
                     }
                 }).init().run();
 
