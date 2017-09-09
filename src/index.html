@@ -1,0 +1,116 @@
+<!DOCTYPE html><!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]><html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]><html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang=""> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="Js text effect with css3" />
+        <meta name="robots" content="all" />
+        <meta name="revisit-after" content="1 days" />
+        <meta name="author" content="Pierre Fromager, " />
+        <meta name="keywords" content="JsTextEffect" />
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" media="screen" rel="stylesheet" type="text/css" />
+        <link href="./css/main.css" media="screen" rel="stylesheet" type="text/css" />
+        <script src="./js/main.js" type="text/javascript"></script>
+        <title>textEffect</title>
+    </head>
+    <body>
+        <div class="container">
+
+            <div class="row">
+                <div class="col-xs-10 col-xs-offset-1">
+                    <h1 class="text-center">
+                        textEffect v0.1
+                        <a title="Download" href="https://gogs.pier-infor.fr/pf.pier-infor.fr/JsTextEffect" class="btn btn-success" target="_blank">
+                            <span class="glyphicon glyphicon-download-alt"></span>
+                            <span class="hidden-xs">Download</span>
+                        </a>
+                    </h1>
+                    <p class="text-center">&nbsp;[&nbsp;Animate your text&nbsp;]&nbsp;</p>
+                </div>
+            </div>
+            
+            <div class="clear"></div>
+            
+            <div class="row ">
+                <div class="col-xs-10 col-xs-offset-1 showTime">
+                    <h3 class="col-xs-10">te_rotatey</h3>
+                    <button id="playP1" type="button" class="btn btn-sm btn-success col-xs-2 push-right">
+                        <strong>
+                            <span class="glyphicon glyphicon-play"></span>
+                            <span class="hidden-xs">Play</span>
+                        </strong>
+                    </button>
+                    <div class="p1">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+                        Quisque sollicitudin lacus porttitor congue tincidunt. 
+                        Praesent eget odio eget ipsum volutpat auctor porta ac ipsum. 
+                        Integer eget erat a tellus ornare auctor eu vel felis.
+                    </div>
+                </div>
+            </div>
+
+            <hr>
+
+            <div class="row">
+                <div class="col-xs-10 col-xs-offset-1 showTime">
+                    <h3 class="col-xs-10">te_scalexy</h3>
+                    <button id="playP2" type="button" class="btn btn-sm btn-success col-xs-2 push-right">
+                        <strong>
+                            <span class="glyphicon glyphicon-play"></span>
+                            <span class="hidden-xs">Play</span>
+                        </strong>
+                    </button>
+                    <div class="p2">
+                        Vivamus malesuada auctor turpis, id scelerisque quam ornare ut. 
+                        Sed ultrices gravida libero eget viverra. Suspendisse ut risus ex. 
+                        Curabitur at ipsum id velit porttitor blandit sed ut nunc. 
+                        Aliquam porttitor id quam id blandit.
+                    </div>
+                </div>                                
+            </div>
+        </div>
+
+        <script>
+            function show(id,visible){
+                document.getElementById(id).style.display = (visible) ? "block" : "none";
+            }
+            document.addEventListener('DOMContentLoaded', function () {
+                
+                var t1 = new textEffect({
+                    selector: 'div.p1',
+                    animActivClass: 'te_rotatey',
+                    animTempo: 10,
+                    clearClass: 'clear',
+                    cbStart: function(){show('playP1', false);},
+                    cbComplete: function(){show('playP1', true);},
+                    cbTempoDelay: function(childs, ct, tempo) {
+                        var l = Math.cos(ct) >> 0;
+                        var pl = (l < 0) ? l * -1 : l;
+                        return (tempo + (100 * pl));
+                    }
+                }).init().run();
+
+                var t2 = new textEffect({
+                    selector: 'div.p2',
+                    animActivClass: 'te_scalexy',
+                    animTempo: 20,
+                    clearClass: 'clear',
+                    cbStart: function(){show('playP2', false);},
+                    cbComplete: function(){show('playP2', true);}
+                }).init().run();
+
+                document.getElementById('playP1').addEventListener("click", function (e) {
+                    t1.reset().init().run();
+                });
+
+                document.getElementById('playP2').addEventListener("click", function (e) {
+                    t2.reset().init().run();
+                });
+            });
+        </script>
+    </body>
+</html>
